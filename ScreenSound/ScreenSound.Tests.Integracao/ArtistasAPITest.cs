@@ -15,6 +15,7 @@ public class ArtistasAPITest
     }
 
     [Fact]
+    [Trait("Categoria", "Integração")]
     public async Task GetArtistasAsync_DeveChamarEndpointECapturarLista()
     {
         // Arrange

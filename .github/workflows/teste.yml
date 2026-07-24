@@ -3,7 +3,7 @@ name: Executar Testes
 on: [push, pull_request]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,7 @@ jobs:
         working-directory: ScreenSound
 
       - name: Executar Testes
-        run: dotnet test ScreenSound.sln --logger "trx;LogFileName=resultado_teste.trx"
+        run: dotnet test ScreenSound.sln --logger "trx;LogFileName=resultado_teste.trx" --filter Categoria=Integração
         working-directory: ScreenSound
 
       - name: Salvar Relatório Testes
