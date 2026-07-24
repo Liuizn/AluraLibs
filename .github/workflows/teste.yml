@@ -3,27 +3,28 @@ name: Executar Testes
 on: [push, pull_request]
 
 jobs:
-  -runs-on: ubuntu-lastest
+  test:
+    runs-on: ubuntu-latest
 
-  steps:
-    - name: Clonar Repositório
-    - uses: actions/checkout@v4
+    steps:
+      - name: Clonar Repositório
+        uses: actions/checkout@v4
 
-    - name: Instalar .NET
-    - uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
+      - name: Instalar .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Restaurar Depedências
-      run: dotnet restore ScreenSound.sln
-      working-directory: ScreenSound
+      - name: Restaurar Dependências
+        run: dotnet restore ScreenSound.sln
+        working-directory: ScreenSound
 
-    - name: Executar Testes
-      run: dotnet test ScreenSound.sln --logger "trx;LogFileName=resultado_teste.trx"
-      working-directory: ScreenSound
+      - name: Executar Testes
+        run: dotnet test ScreenSound.sln --logger "trx;LogFileName=resultado_teste.trx"
+        working-directory: ScreenSound
 
-    - name: Salvar Relatório Testes
-      uses: actions/upload=artifact@v4
-      with:
-        name: resultado-Testes
-        path: resultado_teste.trx
+      - name: Salvar Relatório Testes
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultado-Testes
+          path: resultado_teste.trx
