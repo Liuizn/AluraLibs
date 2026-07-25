@@ -32,3 +32,33 @@ jobs:
       - name: Executar teste e gerar relatório de cobertura
         run: dotnet test ScreenSound.sln --collect:"XPlat Code Coverage" --filter Categoria=Integração
         working-directory: ScreenSound
+
+      - name: Listar arquivos de cobertura
+        run: ls ScreenSound.Tests.Integracao/TestResults/**/coverage.cobertura.xml
+        working-directory: ScreenSound
+
+      - name: Localizar arquivo de cobertura
+        id: cobertura
+        shell: pwsh
+        run: |
+          $file = Get-ChildItem -Path "ScreenSound.Tests.Integracao/TestResults" -Recurse -Filter "coverage.cobertura.xml"
+          echo "coverage_file=$($file.FullName)" >> $env:GITHUB_ENV
+        working-directory: ScreenSound
+
+      - name: Instalar ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+      - name: Gerar relatório de cobertura
+        run: |
+          reportgenerator -reports:"${{ env.coverage_file }}" -targetdir:"ScreenSound.Tests.Integracao/RelatorioCobertura"
+        working-directory: ScreenSound
+
+      - name: Listar arquivos do relatório
+        run: ls ScreenSound.Tests.Integracao/RelatorioCobertura
+        working-directory: ScreenSound
+
+      - name: Upload do artefato do relatório de cobertura
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-cobertura
+          path: ScreenSound/ScreenSound.Tests.Integracao/RelatorioCobertura
