@@ -28,3 +28,7 @@ jobs:
         with:
           name: resultado-Testes
           path: resultado_teste.trx
+      
+      - name: Executar teste e gerar relatório de cobertura
+        run: dotnet test ScreenSound.sln --collect:"XPlat Code Coverage" --filter Categoria=Integração
+        working-directory: ScreenSound
